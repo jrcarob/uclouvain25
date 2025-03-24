@@ -4,7 +4,7 @@ title: "CORPORATE FINANCE<br>Portfolio Optimization with Excel (...and a bit of 
 author: "José Caro"
 email: "jcaro@uco.es"
 date: "Spring, 2025 @ Louvain"
-pdflink: "uclouvain-slides.pdf"
+pdflink: "uclouvain2025.pdf"
 length: "120 minutes"
 department: "Department of Statistics, Econometrics and Applied Statistics"
 output:
