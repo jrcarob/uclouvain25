@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>CORPORATE FINANCE Portfolio Optimization with Excel (…and a bit of R?)</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="José Caro" />
+    <script src="lib/header-attrs-2.29/header-attrs.js"></script>
+    <link href="lib/remark-css-0.0.1/ninjutsu.css" rel="stylesheet" />
+    
+    <!--
+    <script defer src="assets/all.min.js"></script>
+
+    Need below to enable css contents
+
+    <script>
+      window.FontAwesomeConfig = {
+        searchPseudoElements: true
+      }
+    </script>
+
+    -->
+    <link rel="stylesheet" href="assets/font-awesome-all.css" type="text/css" />
+    <link rel="stylesheet" href="assets/tachyons-addon.css" type="text/css" />
+    <link rel="stylesheet" href="assets/animate.css" type="text/css" />
+    <link rel="stylesheet" href="assets/fira-code.css" type="text/css" />
+    <link rel="stylesheet" href="assets/boxes.css" type="text/css" />
+    <link rel="stylesheet" href="assets/table.css" type="text/css" />
+    <link rel="stylesheet" href="assets/styles.css" type="text/css" />
+    <link rel="stylesheet" href="assets/monash-brand.css" type="text/css" />
+    <link rel="stylesheet" href="assets/monash-fonts.css" type="text/css" />
+    <link rel="stylesheet" href="assets/slide-types.css" type="text/css" />
+    <link rel="stylesheet" href="assets/custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+class: middle center hide-slide-number monash-bg-gray80
+
+
+
+
+
+.info-box.w-50.bg-white[
+These slides are viewed best by Chrome or Firefox and occasionally need to be refreshed if elements did not load properly. See &lt;a href="uclouvain-slides.pdf"&gt;here for the PDF &lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt;&lt;/a&gt;. 
+]
+
+&lt;br&gt;
+
+.white[Press the **right arrow** to progress to the next slide!]
+
+
+
+---
+
+
+background-size: cover
+class: title-slide
+count: false
+
+# .monash-blue[CORPORATE FINANCE&lt;br&gt;Portfolio Optimization with Excel (...and a bit of `R`?)]
+
+&lt;br&gt;
+
+&lt;h2 style="font-weight:900!important;"&gt;&lt;/h2&gt;
+
+.bottom_abs.width100[
+
+Presenter: *José Caro*
+
+&lt;i class="fas fa-university"&gt;&lt;/i&gt; Department of Statistics, Econometrics and Applied Statistics, &lt;Br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;University of Córdoba, Spain.
+
+&lt;i class="fas fa-envelope"&gt;&lt;/i&gt;  jcaro@uco.es
+
+&lt;a href="https://twitter.com/caroisallin" style="color:black"&gt;&lt;i class="fab fa-twitter"&gt;&lt;/i&gt; @caroisallin&lt;/a&gt;
+
+&lt;i class="fas fa-calendar-alt"&gt;&lt;/i&gt; Spring, 2025 @ Louvain
+
+&lt;br&gt;
+
+]
+
+
+---
+
+class: footer-slide
+layout: true
+name: footer
+
+
+.footnote.monash-black.f4[
+&lt;i class="fas fa-link"&gt;&lt;/i&gt; &lt;a href="https://github.com/jrcarob/UCLouvain" style="color:#6F7C4D!important;"&gt;UCLouvain Teaching Material and Slides&lt;/a&gt;
+]
+
+---
+
+
+# .monash-purple2[A little about me] 
+
+.flex[
+.w-40[
+
+## Your friendly neighbor 
+
+&lt;center&gt;
+&lt;img src="images/spidey-removebg.png" alt="monash sign" width="45%"&gt;&lt;/center&gt;
+]
+
+.w-60[
+
+### José Caro
+
+* **Assistant Professor** at the University of Córdoba, Spain 🇪🇸 
+
+* **7 years teaching** 🎓
+
+  - Statistics &amp; Quantitative Methods for Business &amp; Economics
+  
+  - Financial Mathematics
+  
+  - Microeconomics
+
+* Previously worked as **Financial Controller** at KME 📦
+  
+* **Research Interests**
+
+  - Demography &amp; Demographic Models
+  
+  - Applied Statistics &amp; Econometrics to Financial Markets
+
+  - Econophysics
+
+]
+]
+
+--
+
+.absolute.bottom-3.right-1[
+.info-box.w-100[
+**Friendly advice:** You are kindly invited to visit Córdoba
+]
+]
+
+---
+
+# .monash-purple2[Contents]
+
+&lt;br&gt;
+
+.f1[
+
+.circle.monash-bg-blue.white[1] &lt;b&gt;&lt;i class="fas fa-project-diagram"&gt;&lt;/i&gt; Introduction: What is Portfolio Optimization&lt;/b&gt; .f3[]
+&lt;br&gt;
+
+.circle.monash-bg-blue.white[2] &lt;b&gt;&lt;i class="fas fa-wrench"&gt;&lt;/i&gt; Theoretical Foundations&lt;/b&gt; .f3[]
+&lt;br&gt;
+
+.circle.monash-bg-blue.white[3] .monash-blue2[&lt;b&gt;&lt;i class="fas fa-chart-bar"&gt;&lt;/i&gt; R As a Tool for Financial Analysis&lt;/b&gt;] .f3[]
+&lt;br&gt;
+
+.circle.monash-bg-blue.white[4] &lt;b&gt;&lt;i class="fas fa-question"&gt;&lt;/i&gt; Key Takeaways &amp; Q&amp;A&lt;/b&gt; .f3[]
+&lt;br&gt;
+
+.circle.monash-bg-blue.white[5] &lt;b&gt;&lt;i class="fas fa-laptop-code"&gt;&lt;/i&gt; Simulation with Excel&lt;/b&gt; .f3[]
+&lt;br&gt;
+]
+
+---
+
+class: transition  animated slideInLeft
+
+# .circle-big[1] 
+
+# What is Portfolio Optimization
+
+&lt;span style="font-size:20pt; "&gt;**_"Diversification is the only free lunch in investing."_** - Harry Markowitz, 1927-2023&lt;/span&gt;
+
+&lt;br&gt;&lt;br&gt;
+
+.f3.center.w-100[
+
+**Reference:** Berk, J. &amp; DeMarzo, P.: _Corporate Finance_, 6th Ed., *Springer-Verlag New York* (2024)
+
+]
+
+---
+
+# Corporate Finance
+
+&lt;br&gt;&lt;br&gt;
+
+.f1.center[
+.animated.bounce[
+.monash-blue[&lt;b&gt;&lt;i class="fas fa-project-diagram"&gt;&lt;/i&gt;1. Introduction: What is Portfolio Optimization&lt;/b&gt;]
+]
+
+
+.monash-ruby2[**1.1 Defining Investment Goals (Risk vs. Return)**
+
+**1.2 Diversification Benefits**
+
+**1.3 Importance of Portfolio Construction**
+]
+
+{{content}}
+
+&lt;br&gt;
+
+**What do we mean by “_optimization_"?**
+
+]
+
+---
+
+# .monash-purple2[How Risk Affects Investor Decisions and Returns?]
+
+&lt;br&gt;&lt;br&gt;
+
+&lt;center&gt;&lt;img src="images/returns1.png" alt="monash sign" width="90%"&gt;&lt;/center&gt;
+
+---
+
+# .monash-purple2[How Risk Affects Investor Decisions and Returns?]
+
+.monash-green2[_Suppose your great-grandparents invested 100USD on your behalf at the end of 1925. They instructed their broker to reinvest any dividends or interest earned in the account until the beginning of 2025. How would that 100USD have grown if it were placed in one of the following investments?_]&lt;br&gt;
+--
+
+**1. Standard &amp; Poor’s 500:** A portfolio, constructed by Standard and Poor’s 500 U.S. companies stocks.&lt;br&gt;
+--
+
+**2. Small Stocks:** A portfolio, updated quarterly, of U.S. stocks traded on the NYSE with market capitalizations in the bottom 20%.&lt;br&gt;
+--
+
+**3. World Portfolio:** A portfolio of international stocks from all of the world’s major stock markets in North America, Europe, and Asia.&lt;br&gt;
+--
+
+**4. Corporate Bonds:** A portfolio of long-term, AAA-rated U.S. corporate bonds with maturities of approximately 20 years.&lt;br&gt;
+--
+
+**5. Treasury Bills**: An investment in one-month U.S. Treasury bills.&lt;br&gt;
+--
+
+.monash-red2[**6. Cryptocurrencies???** A portfolio of combination of altcoins...?? Wait!! What??!!&lt;br&gt;Well, if your great-grandparents were alive seeing you doing this...]🤯&lt;span style="font-size:25pt; "&gt;🤯&lt;/span&gt;&lt;span style="font-size:35pt; "&gt;🤯&lt;/span&gt;&lt;span style="font-size:45pt; "&gt;🤯&lt;/span&gt;&lt;span style="font-size:65pt; "&gt;🤯&lt;/span&gt;
+
+---
+
+# .monash-purple2[How Risk Affects Investor Decisions and Returns?]
+
+&lt;center&gt;
+&lt;img src="images/returns.png" alt="monash sign" width="75%"&gt;&lt;br&gt;&lt;p style="font-size:16px; "&gt;Source: Chicago Center for Research in Security Prices, Standard and Poor’s, MSCI, and Global Financial Data&lt;/p&gt;&lt;/center&gt;
+
+---
+
+# .monash-purple2[The Importance of Time... and Risk]
+
+&lt;center&gt;
+&lt;img src="images/horizons.png" alt="monash sign" width="60%"&gt;&lt;br&gt;&lt;p style="font-size:16px; "&gt;Source: Chicago Center for Research in Security Prices, Standard and Poor’s, MSCI, and Global Financial Data&lt;/p&gt;&lt;/center&gt;
+
+---
+
+# .monash-purple2[Historical Data: Some ETF Prices]
+
+&lt;center&gt;
+&lt;img src="images/ETF_prices.png" alt="monash sign" width="60%"&gt;&lt;br&gt;&lt;p style="font-size:16px; "&gt;Source: Chicago Center for Research in Security Prices, Standard and Poor’s, MSCI, and Global Financial Data&lt;/p&gt;&lt;/center&gt;
+
+---
+
+# .monash-purple2[Historical Data: Returns vs. Volatility]
+
+Important observation: .monash-green2[_**volatility**_] is easy to see, .monash-green2[_**mean return**_] is lost in the noise.
+
+&lt;center&gt;
+&lt;img src="images/ETF_vol.png" alt="monash sign" width="50%"&gt;&lt;br&gt;&lt;p style="font-size:16px; "&gt;Source: Chicago Center for Research in Security Prices, Standard and Poor’s, MSCI, and Global Financial Data&lt;/p&gt;&lt;/center&gt;
+
+---
+
+# .monash-purple2[Defining Investment Goals: Risk vs. Return]
+
+.think-box.w-88[&lt;img src="images/buffet.png" alt="monash sign" width="10%"&gt;_"**Risk comes from not knowing what you're doing**"_ - Warren Buffett]
+
+--
+
+.work-box[
+**Risk:** uncertainty associated with the returns of an investment.
+
+Markowitz defined _risk_ as the variability of the returns as measured by the historical variances:
+`$$risk_j=\frac{1}{T}\sum_{t=1}^{T}\big(R_j(t)-reward_j\big)^{2}.$$`
+]
+
+--
+
+.aim-box[
+**Return:** _gain_ or _loss_ on an investment over a specified period, typically expressed as a percentage of the investment's initial cost.
+]
+
+---
+
+
+# .monash-purple2[Diversification Benefits]
+
+Diversification is a **risk management strategy** that involves spreading investments across various financial instruments, industries, and other categories to reduce exposure to any single asset or risk. The idea is that a diversified portfolio will, on average, yield higher returns and pose a lower risk than any individual investment found within the portfolio.
+
+--
+
+-	**Risk Reduction:** by holding a variety of assets, the impact of a poor-performing investment is mitigated by the better performance of other investments.
+
+--
+
+-	**Smoother Returns:** a diversified portfolio tends to have more stable returns over time.
+
+--
+
+- **Improved Risk-Adjusted Returns:** allows investors to achieve a higher return per unit of risk (*_Sharpe Ratio*).
+
+--
+
+- **Exposure to Multiple Opportunities:** ensures that investors are not overly reliant on a single asset or sector, allowing them to benefit from growth in different areas of the market.
+
+---
+
+# .monash-purple2[Diversification Benefits: How it works. The Role of Correlation]
+
+.monash-ruby2[**Correlation:**] statistical measure that describes the degree to which two assets move in relation to each other. `$$\sigma_{p}^{2}=w_{1}^{2}\sigma_{1}^{2}+w_{2}^{2}\sigma_{2}^{2}+2w_{1}w_{2}\sigma_{1}\sigma_{2}\rho_{1,2}$$`
+
+**Where**
+
+- `\(\sigma^{2}_{p}=\)` Portfolio variance
+
+- `\(w_{1}w_{2}=\)` Weights of the two assets in the portfolio
+
+- `\(\sigma_{1}\sigma_{2}=\)` Standard deviations (volatility) of the two assets
+
+- `\(\rho_{1,2}=\)` Correlation between the two assets
+
+**It ranges from -1 to +1**:
+
+- **If** `\(\rho_{1,2}=+1\)`: perfect positive correlation. Variance is maximized, and there is no diversification benefit.
+
+- **If** `\(\rho_{1,2}=-1\)`: perfect negative correlation. Variance is minimized, and diversification is most effective.
+
+- **For** `\(-1&lt;\rho_{1,2}&lt;+1\)`: the portfolio variance is reduced, but not eliminated.
+
+--
+
+.absolute.bottom-3.right-1[
+.idea-box[**Key Insight:**&lt;br&gt;
+Diversification is most effective when assets have **low or negative correlation**. This means that when one asset performs poorly, another may perform well, balancing the overall portfolio
+]
+]
+
+---
+
+# .monash-purple2[Importance of Portfolio Construction]
+
+Process of **strategically selecting and combining assets** to achieve an optimal balance between risk and return. **Primary goal:** to maximize returns for a given level of risk or minimize risk for a given level of return.
+
+.aim-box[**Practical Steps in Portfolio Construction:**&lt;br&gt;
+-	**Define Investment Objectives:** Determine the investor’s goals, time horizon, and risk tolerance.
+
+- **Asset Allocation:** Decide the proportion of funds to allocate to different asset classes (e.g., equities, bonds, real estate, commodities).
+
+- **Security Selection:** Choose specific securities within each asset class based on fundamental and technical analysis.
+
+- **Portfolio Optimization:** Use mathematical models (e.g., mean-variance optimization) to find the optimal mix of assets that maximizes return for a given level of risk.
+
+-	**Rebalancing:** Periodically **adjusting the portfolio** to maintain the desired asset allocation.
+
+]
+
+---
+
+class: transition  animated slideInLeft
+
+# .circle-big[2] 
+
+# Theoretical Foundations
+
+&lt;span style="font-size:20pt; "&gt;**_"Rule No.1: Never lose money. Rule No.2: Never forget rule No.1."_** - Warren Buffett, 1930-&lt;/span&gt;
+
+&lt;br&gt;&lt;br&gt;
+
+.f3.center.w-100[
+
+**Reference:** Berk, J. &amp; DeMarzo, P.: _Corporate Finance_, 6th Ed., *Springer-Verlag New York* (2024)
+
+]
+
+---
+
+# Corporate Finance
+
+&lt;br&gt;&lt;br&gt;
+
+.f1.center[
+.animated.bounce[
+.monash-blue[&lt;b&gt;&lt;i class="fas fa-project-diagram"&gt;&lt;/i&gt;2. Theoretical Foundations&lt;/b&gt;]
+]
+
+.monash-ruby2[**2.1 Primer on Financial Data: Modeling the Returns &amp; Performance Measures**
+
+**2.2 Markowitz's Modern Portfolio Theory (_MPT_)**
+
+**2.3 A Practical Example**
+]
+
+{{content}}
+]
+
+---
+
+# .monash-purple2[2.1 How do we Model Returns? Simple vs. Log-Returns]
+
+.flex.h-80[
+.w49[
+
+- For stocks, returns are used for the modeling since they are “_stationary_” (as opposed to the previous random walk).
+
+.aim-box.w-100[
+**Simple Returns** or net returns are: `$$R_{t}\triangleq\frac{p_t-p_{t-1}}{p_{t-1}}=\frac{p_t}{p_{t-1}}-1$$`
+]
+
+.aim-box[
+**Log-returns** or continuously compounded:
+`$$r_t\triangleq y_t-y_{t-1}=\log\frac{p_t}{p_{t-1}}=\log(1+R_{t})$$`
+&lt;a href="#36" style="font-size:12pt"&gt;&lt;i class="fas fa-caret-right"&gt;&lt;/i&gt; The world of returns&lt;/a&gt;
+]
+]
+
+.w6[
+&lt;p style="color:white;"&gt;g&lt;/p&gt;
+]
+
+
+.w49[
+
+.think-box[
+**Why we use log-returns:**&lt;br&gt;
+- _**Time-Additivity:**_ Log returns can be added over multiple periods, which simplifies analysis and modeling.
+
+- _**Normal Distribution:**_ Making them more suitable for statistical methods and models.
+
+- _**Compounding:**_ Better accounts for the compounding effect over time.
+
+- _**Zero Boundary:**_ Log returns naturally bound asset prices at zero.
+]
+
+]
+
+]
+
+--
+
+.absolute.bottom-3.right-1[
+.info-box.w-93[
+.f4[
+[More resources on Log-returns including `R` simulation](https://github.com/jrcarob)
+]
+]]
+
+---
+
+# .monash-purple2[2.1 Asset Log-Returns]
+
+- Let `\(p_t\)` be the price of an asset at (discrete) time index `\(t\)`
+
+- The fundamental model is based on modeling the log-prices `\(y_t\triangleq\log p\)` as a random walk:
+`$$y_t=\mu+y_{t-1}+\epsilon{_t}$$`
+
+&lt;img src="images/logpricesp500.png" alt="monash sign" width="48%"&gt;&lt;img src="images/logreturnsp500.png" alt="monash sign" width="48%"&gt;
+
+---
+
+# .monash-purple2[2.1 Asset Log-Returns: Volatility Clustering]
+
+&lt;img src="images/log-ret-vol.png" alt="monash sign" width="50%"&gt;&lt;img src="images/log-ret-std.png" alt="monash sign" width="50%"&gt;
+
+---
+
+name: returns
+
+# .monash-purple2[2.1 The World of Returns]
+
+- In practice, we don't just deal with one asset but with a whole universe of `\(N\)` assets.
+
+- We denote the log-returns of the `\(N\)` assets at time `\(t\)` with the vector `\(\mathbf{r}_t\in\mathbb{R}^{N}\)`. 
+
+- The time index `\(t\)` can denote any arbitrary period such as days, weeks, months, minutes intervals, etc.
+
+- `\(\mathcal{F}_{t-1}\)` denotes the previous historical data.
+
+- Econometrics aims at modeling `\(\mathbf{r}_t\)` conditional on `\(\mathcal{F}_{t-1}\)` and assume that follows an i.i.d. distribution.
+
+- That is, both the **conditional mean and conditional covariance** are constant:
+
+`$$\begin{align}
+\mu_t&amp;=\mu\\
+\Sigma_t&amp;=\Sigma
+\end{align}$$`
+
+.idea-box[
+Very simple model, but its fundamental assumptions was very important for the Nobel prize-winning Markowitz’s portfolio theory (Markowitz, 1952)&lt;sup&gt;1&lt;/sup&gt;
+]
+
+.footnote.f4.monash-blue2[
+&lt;sup&gt;1&lt;/sup&gt;H. Markowitz (1952): Portfolio Selection, _Journal of Finance_, vol.7, nº 1, pp 77-91.&lt;br&gt;&lt;br&gt;&lt;br&gt;
+]
+
+---
+
+# .monash-purple2[2.1 Portfolio Return]
+
+- Suppose the capital budget is `\(B\)` USD.
+
+- The portfolio `\(\mathbf{W}\in\mathbb{R}^{N}\)` denotes the normalized USD weights of the `\(N\)` assets such that `\(\mathbf{1}^{T}\mathbf{W}=1\)`
+
+- For each asset `\(i\)`, the initial wealth is `\(Bw_{i}\)` and the wealth is `$$Bw_{i}(p_{i,t}/p_{i,t-1})=Bw_{i}(R_{it}+1).$$`
+
+- Then, the **portfolio return** is `$$R_{t}^{p}=\frac{\sum_{i=1}^{N}Bw_{i}(R_{it}+1)-B}{B}=\sum_{i=1}^{N}w_{i}R_{it}\approx\sum_{i=1}^{N}w_{i}r_{it}=\mathbf{w}^{T}\mathbf{r}_{t}$$`
+
+- The portfolio expected return and variance are `\(\mathbf{w}^{T}\mu\)` and `\(\mathbf{w}^{T}\mathbf{\Sigma w}_{t}\)`, respectively.
+
+---
+
+# .monash-purple2[2.1 An Example on Portfolio Returns&lt;sup&gt;2&lt;/sup&gt;]
+
+.work-box[
+.f4[
+We buy 200 shares of Dolby Labs at 30USD per share and 100 shares of Coca-Cola stock at 40USD per share. If Apple’s share price goes up to 36USD and Netflix’s falls to 38USD, what is the new value of the portfolio, and what return did it earn? After the price change, what are the new portfolio weights?
+]
+]
+
+--
+
+.code-box[
+.f4[
+New value of the portfolio: `\(200\times 36USD + 100\times 38USD = 11.000USD\)`, for a gain of `\(1.000USD\)` or a 10% return on your `\(10.000USD\)` investment. Dolby’s return was `\(36/30 − 1 = 20\%\)`, and Coca-Cola’s was `\(38/40 − 1 = −5\%\)`. Given the initial portfolio weights of 60% Dolby and 40% Coca-Cola, we can also compute the portfolio’s return:
+`$$R_{P}=x_{D}R_{D}+x_{C}R_{C}=0.6\times(20\%)+0.4\times(-5\%)=10\%$$`
+After price change, the new portfolio weights are: `$$x_{D}=\frac{200\times 36USD}{11.000USD}=65.45\%,\qquad x_{C}=\frac{100\times 38USD}{11.000USD}=34.55\%$$`
+]
+]
+
+.footnote.f4.monash-blue2[
+&lt;sup&gt;2&lt;/sup&gt;Berk, J. &amp; DeMarzo, P.: _Corporate Finance_, 6th Ed., *Springer-Verlag New York* (2024).&lt;br&gt;&lt;br&gt;&lt;br&gt;
+]
+
+---
+
+# .monash-purple2[2.1 An Example on Portfolio Expected Return&lt;sup&gt;2&lt;/sup&gt;]
+
+.work-box[
+Suppose we invest `\(10.000USD\)` in Meta Platforms (Facebook) stock, and `\(30.000USD\)` in Honeywell International stock. We expect a return of 10% for Facebook and 16% for Honeywell. What is your portfolio’s expected return?
+]
+
+--
+
+.code-box[
+Our investment is `\(40.000USD\)` in total, so our portfolio weights are `\(10.000/40.000=0.25\)` in Facebook and `\(30.000/40.000=0.75\)` in Honeywell. Therefore, our portfolio's expected return is `$$E[R_p]=x_FE[R_F]+x_HE[R_H]=0.25\times10\%+0.75\times16\%=14.5\%$$`
+]
+
+.footnote.f4.monash-blue2[
+&lt;sup&gt;3&lt;/sup&gt;Berk, J. &amp; DeMarzo, P.: _Corporate Finance_, 6th Ed., *Springer-Verlag New York* (2024).&lt;br&gt;&lt;br&gt;&lt;br&gt;
+]
+
+---
+
+# .monash-purple2[2.1 Performance Measures]
+
+- .monash-ruby2[**Probability Distributions:**] likelihoold of occurring a possible return: `\(p_R\)`
+
+- .monash-ruby2[**Expected Returns:**] weighted average of the possible returns: `$$\mathbf{E}[R]=\sum_{R}x_i\times R,\text{where}\quad x_i=\frac{\text{Value of investment}\ i}{\text{Total value of portfolio}}$$`
+
+- .monash-ruby2[**Variance and Standard Deviation:**]
+`$$Var(R)=\mathbf{E}\bigg[\big(R-\mathbf{E}[R]\big)^{2}\bigg]=\sum_{R}p_{R}\times\big(R-\mathbf{E}[R]\big)^{2};\quad SD(R)=\sqrt{Var(R)}$$`
+
+- .monash-ruby2[**Value at Risk (VaR) and Conditional VaR:**] 
+
+  - **VaR** `\(\Rightarrow\)` Quantile of the loss: *What is the maximum loss I can expect over a certain time period with a certain level of confidence?* 
+  
+  - **CVaR** `\(\Rightarrow\)` a.k.a. Expected Shortfall (ES): *If losses exceed the VaR, what is the average loss I can expect?*
+
+---
+
+# .monash-purple2[2.1 Performance Measures (cont.)]
+
+- .monash-ruby2[**Volatility:**] The **combination** of stocks in a portfolio **reduces risk through diversification**.
+
+  * The amount of risk that will remain depends on the degree to which the stocks are exposed to common risks.
+
+  * To find the risk of a portfolio, we need to know more than the risk and return of the component stocks: We need to know the degree to which the stocks face common risks and their returns move together. In this section, we introduce two statistical measures, covariance and correlation, that allow us to measure the co-movement of returns.
+
+.flex.h-80[
+
+.w49[
+
+.aim-box.w-100[
+.f4[
+**Covariance:** expected product of the deviations of two returns from their means. `$$\operatorname{Cov}\left(R_i, R_j\right)=E\left[\left(R_i-E\left[R_i\right]\right)\left(R_j-E\left[R_j\right]\right)\right]$$`&lt;br&gt;
+]
+]
+]
+
+.w49[
+
+.aim-box.w-100[
+.f4[
+**Correlation:** measures how returns move in relation to each other. It is always between +1 and -1
+`$$\operatorname{Corr}(R_i,R_j)=\frac{Cov(R_i,R_j)}{SD(R_i)SD(R_j)}$$`
+]
+]
+
+]
+
+]
+
+---
+
+# .monash-purple2[2.2 Modern Portfolio Theory]
+
+- In finance, the expected return `\(\mathbf{w}^T\mu\)` is very relevant as it quantifies the average benefit.
+
+- However, in practice, the **average performance is not enough** to characterize an investment and one needs to control the **probability of going bankrupt**.
+
+- Risk measures control how risky an investment strategy is.
+--
+
+- The most basic **measure of risk** is given by the **variance** _(Markowitz 1952)_: a higher variance means that there are large peaks in the distribution which may cause a big loss.&lt;a href="#36" style="font-size:12pt"&gt;&lt;i class="fas fa-caret-right"&gt;&lt;/i&gt; Markowitz reference&lt;/a&gt;
+
+&lt;center&gt;&lt;img src="images/markowitz.png" alt="monash sign" width="30%"&gt;&lt;/center&gt;
+
+- There are **more sophisticated risk measures** such as _downside risk_, _VaR_, _ES_, etc.
+
+
+---
+
+# .monash-purple2[2.2 Modern Portfolio Theory: Mean-Variance Tradeoff]
+
+.flex.h-80[
+
+.w-45[
+
+.monash-red2[
+.f3[
+- **How do we choose an efficient portfolio...? &lt;br&gt;Wait... What is an _'efficient'_ portfolio?**
+]
+]
+
+&lt;center&gt;&lt;img src="images/thinking.png" alt="monash sign" width="33%"&gt;&lt;/center&gt;
+]
+
+.w-55[
+
+.idea-box[An efficient portfolio is .monash-purple2[**optimized in terms of the risk-return trade-off**].&lt;br&gt; **Key Characteristics:**&lt;br&gt;
+
+- .monash-purple2[Optimal Risk-Return Trade-off:] efficient portfolio lies on the **efficient frontier**.
+
+- .monash-purple2[Diversification:] Efficient portfolios are **well-diversified**.
+
+- .monash-purple2[No Dominated Portfolios:] An efficient portfolio **is not dominated by any other portfolio**.
+
+- .monash-purple2[Investor-specific:] The "best" efficient portfolio for an investor **depends on their risk tolerance and return objectives**.
+]
+]
+
+]
+
+---
+
+# .monash-purple2[2.2 Modern Portfolio Theory: Mean-Variance Tradeoff]
+
+- The idea of Markowitz’s mean-variance portfolio (MVP) is to find a trade-off between the expected return `\(\mathbf{w}^T\mu\)` and the risk of the portfolio measured by the variance `\(\mathbf{w}^T\Sigma\mathbf{w}\)`:
+$$
+`\begin{align}
+\underset{\mathbf{w}}{\operatorname{maximize}}\quad &amp; \mathbf{w}^T \boldsymbol{\mu}-\lambda \mathbf{w}^T \boldsymbol{\Sigma} \mathbf{w}\\
+\text { subject to }\quad &amp; \mathbf{1}^T \mathbf{w}=1
+\end{align}`
+$$
+where `\(\mathbf{w^T1} = 1\)` is the capital budget constraint and `\(\lambda\)` is a parameter that controls how risk-averse the investor is.
+
+.flex.h-80[
+
+.w-50[
+
+.aim-box.w-90[
+.f4[
+**Maximization of mean return:** 
+$$
+`\begin{align}
+\underset{\mathbf{w}}{\operatorname{maximize}}\quad &amp; \mathbf{w}^T \boldsymbol{\mu}\\
+\text { subject to }\quad &amp; \mathbf{w}^T \boldsymbol{\Sigma} \mathbf{w}\leq\alpha\\
+\quad &amp; \mathbf{1}^T\mathbf{w}=1
+\end{align}`
+$$
+]
+]
+]
+
+.w-50[
+
+.aim-box.w-90[
+.f4[
+**Minimization of risk:**
+$$
+`\begin{align}
+\underset{\mathbf{w}}{\operatorname{minimize}}\quad &amp; \mathbf{w}^T \boldsymbol{\Sigma} \mathbf{w}\\
+\text { subject to }\quad &amp; \mathbf{w}^T \boldsymbol{\mu}\geq1\\
+\quad &amp; \mathbf{1}^T\mathbf{w}=1
+\end{align}`
+$$
+]
+]
+
+]
+
+]
+
+---
+
+# .monash-purple2[2.2 Modern Portfolio Theory: Mean-Variance Tradeoff]
+
+.flex.h-80[
+
+.w-50[
+
+.code-box.w-95[
+.f4[
+**Portfolio Expected Return:** 
+`$$\mathbf{E}(R_P)=\sum_{i=1}^{n}w_i\mathbf{E}(R_i)$$`
+Where:&lt;br&gt;
+- `\(\mathbf{E}(R_P)=\text{Expected return of the portfolio.}\)` &lt;br&gt;
+- `\(w_i=\text{Expected return of the}\ i^{th} \text{asset}\)`&lt;br&gt; 
+`\(\text{in the portfolio.}\)` &lt;br&gt;
+- `\(\mathbf{E}(R_i)=\text{Expected return of the}\ i^{th} \text{asset.}\)` 
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
+]
+]
+]
+
+.w-50[
+
+.code-box.w-95[
+.f4[
+**Portfolio Risk (Standard Deviation):**
+`$$\sigma_P=\sqrt{\sum_{i=1}^{n}\sum_{j=1}^{n}w_i w_j\sigma_i \sigma_j\rho_{ij}}$$`
+Where:&lt;br&gt;
+- `\(\sigma_P=\text{Portfolio standard deviation (risk).}\)` &lt;br&gt;
+- `\(w_i w_j=\text{weights of assets}\ i\ \text{and}\ j\)` &lt;br&gt;
+- `\(\sigma_i \sigma_j=\text{standard deviation of assets}\ i\ \text{and}\ j.\)` &lt;br&gt;
+- `\(\rho_{ij}=\text{Correlation coefficient between}\)`&lt;br&gt; 
+`\(\text{assets}\ i\ \text{and}\ j.\)` &lt;br&gt;
+]
+]
+
+]
+
+]
+
+---
+
+# .monash-purple2[2.2 Modern Portfolio Theory: Mean-Variance Tradeoff]
+
+.flex.h-80[
+
+.w-50[
+
+.work-box[**Optimal Risk-Return Trade-off curve a.k.a the _Efficient Frontier_**&lt;br&gt;
+.f4[
+* **Efficient frontier:** the set of all portfolios that provide the maximum return for a given level of risk or the minimum risk for a given level of return.
+
+* Portfolios below the efficient frontier are considered **inefficient** because they do not provide enough return for the level of risk taken.
+
+* The efficient portfolio with the smallest possible variance is called the **global minimum variance portfolio**.
+]
+]
+]
+
+.w-50[
+
+&lt;br&gt;
+
+&lt;center&gt;&lt;img src="images/efficient2wbg.png" alt="monash sign" width="80%"&gt;&lt;/center&gt;
+
+]
+]
+
+---
+
+# .monash-purple2[2.3 A Practical Example]
+
+.work-box[
+Suppose Ford Motors stock has an expected return of 15% and a volatility of 42%, and Molson Coors Brewing has an expected return of 11% and a volatility of 32%. If the two stocks are uncorrelated:&lt;br&gt;
+
+a. What is the expected return and volatility of a portfolio consisting of 73% Ford Motor stock and 27% of Molson-Coors Brewing stock?&lt;br&gt;
+b. Given your answer to a, is investing all your money in Molson-Coors stock an efficient portfolio of these two stocks?&lt;br&gt;
+c. Is investing all your money in Ford Motors an efficient portfolio of these two stocks?
+]
+
+---
+
+# .monash-purple2[2.3 A Practical Example: Solution]
+
+.monash-ruby2[**(a): Expected Return and Volatility of the Portfolio**]
+
+The portfolio consists of 73% Ford Motors and 27% Molson Coors.
+
+**1. Expected Return of the Portfolio:**
+
+The expected return of a portfolio is the weighted average of the expected returns of its constituent assets:
+
+`$$E(R_p)=w_F\cdot E(R_F)+w_M\cdot E(R_M)$$`
+Where:&lt;br&gt;
+
+- `\(w_F=\text{weights of Ford Motors}=73\%=0.73\)`
+
+- `\(w_M=\text{weights of Molson Coors}=27\%=0.27\)`
+
+Substituting the values: `$$E(R_p)=0.73\cdot 15\%+0.27 \cdot 11\%=\boxed{13.92\%}$$`
+
+
+---
+
+# .monash-purple2[2.3 A Practical Example: Solution (cont.)]
+
+**2. Volatility of the Portfolio:**
+
+The volatility (standard deviation) of a portfolio is calculated as:
+
+`$$\sigma_p=\sqrt{w_{F}^{2}\sigma^{2}_{F}+w_{M}^{2}\sigma^{2}_{M}+2w_{F}w_{M}\sigma_{F}\sigma_{M}\rho_{FM}}$$`
+Since the stocks are uncorrelated `\((\rho_{FM}=0)\)`, the formula simplifies to: `$$\sigma_p=\sqrt{w_{F}^{2}\sigma^{2}_{F}+w_{M}^{2}\sigma^{2}_{M}}$$`
+Substituting the values we have: `$$\sigma_p=\sqrt{(0.73^{2}\times42^{2})+(0.27^{2}\times32^{2})}\approx \boxed{31.85\%}$$`
+
+---
+
+# .monash-purple2[2.3 A Practical Example: Solution (cont.)]
+
+.monash-ruby2[**(b): Is Investing all in Molson Coors efficient?**]
+
+To determine whether investing all your money in Molson Coors is efficient, compare its risk-return profile to the portfolio in part (a).
+
+|  | Molson Coors&lt;br&gt;Alone | Portfolio Ford &amp;&lt;br&gt;Molson Coors |
+|---|:---:|:---:|
+| Expected Return | 11% | 13.92% |
+| Volatility | 32% | 31.85% |
+
+**Analysis:** The portfolio has a higher expected return (13.92%) than Molson Coors alone (11%) while having slightly lower volatility (31.85% vs. 32%).
+
+This means the portfolio dominates investing solely in Molson Coors because it provides a better risk-return trade-off.
+
+**Conclusion:** Investing all your money in Molson Coors is not efficient because the portfolio in part (a) offers a higher return for almost the same level of risk.
+
+---
+
+# .monash-purple2[2.3 A Practical Example: Solution (cont.)]
+
+.monash-ruby2[**(c): Is Investing all in Ford Motors efficient?**]
+
+Now, compare investing all your money in Ford Motors to the portfolio in part (a).
+
+|  | Ford Motors&lt;br&gt;Alone | Portfolio Ford &amp;&lt;br&gt;Molson Coors |
+|---|:---:|:---:|
+| Expected Return | 15% | 13.92% |
+| Volatility | 42% | 31.85% |
+
+**Analysis:** The portfolio has a lower expected return (13.92%) than Ford Motors alone (15%) but has **significantly lower volatility (31.85% vs. 42%)**.
+
+**Conclusion:** Whether investing all in Ford Motors is efficient depends on the investor’s risk tolerance:
+
+  - If the investor is willing to accept higher risk for higher return, Ford Motors alone could be considered efficient.
+
+  - However, the portfolio provides a better risk-adjusted return (as measured by the **Sharpe Ratio**), making it more efficient for most investors.
+
+---
+
+# .monash-purple2[2.3 A Practical Example: Solution (cont.)]
+
+.monash-ruby2[**Bonus: Sharpe Ratio Comparison**]
+
+Let assume a _risk-free rate_ `\((R_f)\)` of 3%:
+
+  - **Ford Motors Alone:** `$$\text{Sharpe ratio}=\frac{15\%-3\%}{42\%}=\frac{12\%}{42\%}\approx 0.29$$`
+--
+
+  - **Portfolio (73% Ford, 27% Molson Coors):** `$$\text{Sharpe ratio}=\frac{13.92\%-3\%}{31.85\%}=\frac{10.92\%}{31.85\%}\approx 0.34$$`
+--
+
+The portfolio has a **higher Sharpe Ratio (0.34)** than Ford Motors alone (0.29), indicating it provides a better risk-adjusted return.
+
+**Conclusion:** Investing all your money in Ford Motors is not efficient because the portfolio in part (a) offers a better risk-adjusted return.
+
+---
+
+class: transition  animated slideInLeft
+
+# .circle-big[3] 
+
+# R as a Tool for Financial Analysis
+
+&lt;img src="images/tidyfinance-hex.png" width="150px"&gt;
+
+
+.f3.center.w-100[
+
+Scheuch, C., Voigt, S., &amp; Weiss, P. (2023). Tidy Finance with R (1st ed.). *Chapman and Hall/CRC*
+
+]
+
+---
+
+# .monash-purple2[Introduction to R for Financial Analysis]
+
+`R` is a powerful, open-source programming language and environment specifically designed for statistical computing, data analysis, and visualization. Its flexibility, extensive package ecosystem, and strong community support make it an ideal tool for financial analysis. Here’s why `R` is widely used in finance:
+
+- **Open Source:** `R` is free to use, and its open-source nature encourages continuous development and innovation.
+
+- **Rich Ecosystem:** `R` has dozens of packages tailored for financial analysis, such as `quantmod`, `PortfolioAnalytics`, and `PerformanceAnalytics`. &lt;i class="fas fa-caret-right"; style="font-size:10pt"&gt;[R libraries for finance.](https://cran.r-project.org/web/views/Finance.html)&lt;/i&gt;
+
+- **Data Handling:** `R` can handle large datasets and perform complex data manipulations, making it suitable for financial time series analysis.
+
+- **Visualization:** `R`’s visualization capabilities (e.g., `ggplot2`, `plotly`) allow users to create insightful charts and graphs for financial data.
+
+- **Reproducibility:** `R` scripts can be easily shared and reproduced, making it ideal for collaborative research and regulatory compliance.
+
+---
+
+name: base-plot
+class: font_smaller
+
+# .monash-purple2[A Simple Example: Plotting Prices]
+
+.flex[
+.w-50[
+
+``` r
+# Load necessary library
+
+library(quantmod)
+library(PerformanceAnalytics)
+library(PortfolioAnalytics)
+library(ROI)
+library(ROI.plugin.quadprog)
+library(ggplot2)
+
+# Download Apple stock data from Yahoo Finance
+getSymbols("AAPL", src = "yahoo", from = "2020-01-01", to = "2025-01-01")
+
+# View the first few rows of the data
+head(AAPL)
+```
+
+]
+.w-50[
+
+
+``` r
+# Plot the chart
+chartSeries(AAPL$AAPL.Adjusted, theme = "white", name = "Apple Adjusted Close")
+```
+
+&lt;img src="images/unnamed-chunk-4-1.png" width="540" style="display: block; margin: auto;" /&gt;
+
+]
+
+]
+
+---
+
+name: complex-plot
+class: font_smaller
+
+# .monash-purple2[A More Complex Example: Plotting the Efficient Frontier]
+
+.flex[
+.overflow-scroll.h---500.w-50[
+
+``` r
+## (1) Define the packages that will be needed
+packages &lt;- c('quantmod', 'ggplot2', 'dplyr')
+
+## (2) Install them if not yet installed
+installed_packages &lt;- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)) {
+  install.packages(packages[!installed_packages])
+}
+
+## (3) Load the packages into R session
+invisible(lapply(packages, library, character.only = TRUE))
+
+
+## Create a character vector that has the stock codes we need
+portfolio &lt;- c('AAPL', 'MSFT', 'GOOG', 'AMZN', 'JNJ')
+
+## Load the stocks needed into R 
+portfolio &lt;- lapply(portfolio, function(x) {getSymbols(
+  x, periodicity='weekly', auto.assign=FALSE)})
+
+## Get adjusted prices of all stocks
+portfolio_adjusted &lt;- lapply(portfolio, Ad)
+
+## Transform into xts
+portfolio_adjusted &lt;- do.call(merge, portfolio_adjusted)
+
+## View the first few rows
+head(portfolio_adjusted)
+```
+
+```
+##            AAPL.Adjusted MSFT.Adjusted GOOG.Adjusted AMZN.Adjusted JNJ.Adjusted
+## 2007-01-01      2.559460      21.07884      12.07707        1.9185     39.03189
+## 2007-01-08      2.847456      22.19537      12.51856        1.9100     39.04359
+## 2007-01-15      2.663283      22.12426      12.14053        1.8510     39.69981
+## 2007-01-22      2.569392      21.76156      12.29149        1.8425     38.70965
+## 2007-01-29      2.550432      21.46999      11.93602        1.8695     39.00845
+## 2007-02-05      2.505894      20.60947      11.44990        1.9360     38.43427
+```
+
+``` r
+## Make a list that contains log weekly returns of each stock
+portfolio_adjusted &lt;- lapply(portfolio_adjusted, weeklyReturn, type='log')
+
+## Transform into an xts object
+portfolio_adjusted &lt;- do.call(merge, portfolio_adjusted)
+
+## Adjust the column names 
+colnames(portfolio_adjusted) &lt;- c('AAPL', 'MSFT', 'GOOG', 'AMZN', 'JNJ')
+
+## Remove first row since these do not have returns
+portfolio_adjusted &lt;- portfolio_adjusted[-1]
+
+## View the first few rows of the log returns 
+head(portfolio_adjusted)
+```
+
+```
+##                    AAPL         MSFT        GOOG         AMZN           JNJ
+## 2007-01-08  0.106629761  0.051613904  0.03590414 -0.004440378  0.0002997994
+## 2007-01-15 -0.066866421 -0.003209041 -0.03066328 -0.031377217  0.0166676742
+## 2007-01-22 -0.035890421 -0.016529614  0.01235826 -0.004602678 -0.0252574292
+## 2007-01-29 -0.007406632 -0.013488820 -0.02934704  0.014547708  0.0076893046
+## 2007-02-05 -0.017616924 -0.040905254 -0.04157934  0.034952946 -0.0148286964
+## 2007-02-12  0.018560924 -0.008315974  0.01727811  0.040739350 -0.0013729092
+```
+
+``` r
+## Get variance-covariance matrix
+var_covar &lt;- var(portfolio_adjusted)
+
+## Print results
+print(var_covar)
+```
+
+```
+##              AAPL         MSFT         GOOG         AMZN          JNJ
+## AAPL 0.0017975965 0.0006709159 0.0009200937 0.0009479029 0.0002839247
+## MSFT 0.0006709159 0.0011991586 0.0007536777 0.0007770579 0.0002967806
+## GOOG 0.0009200937 0.0007536777 0.0015611133 0.0010265461 0.0002993159
+## AMZN 0.0009479029 0.0007770579 0.0010265461 0.0022418343 0.0002341253
+## JNJ  0.0002839247 0.0002967806 0.0002993159 0.0002341253 0.0005300484
+```
+
+``` r
+## Set seed for reproducibility
+set.seed(123)
+
+## Get 50,000 random uniform numbers
+random_numbers &lt;- runif(50000)
+
+## Transform random numbers into matrix to distribute across all symbols
+all_weights &lt;- matrix(random_numbers, nrow=10000, ncol=5)
+
+## Add sixth column with just NAs
+all_weights &lt;- cbind(all_weights, rep(NA, 10000))
+
+## Add names
+colnames(all_weights) &lt;- c('AAPL', 'MSFT', 'GOOG', 'AMZN', 'JNJ', 'total')
+
+## Loop to convert into actual weights
+for (i in 1:10000) {
+  
+  ## Get sum of random numbers in each row
+  all_weights[i, 6] &lt;- sum(all_weights[i, 1:5])
+  
+  ## Get the actual weights of the random numbers
+  all_weights[i, 1:5] &lt;- all_weights[i, 1:5] / all_weights[i, 6]
+}
+
+## Delete total column
+all_weights &lt;- all_weights[, -6]
+
+## Create column placeholders
+portfolio_risk &lt;- rep(NA, 10000)
+portfolio_returns &lt;- rep(NA, 10000)
+sharpe_ratios &lt;- rep(NA, 10000)
+
+## Define risk-free rate
+risk_free_rate &lt;- 0.02 / 52  ## annualized risk-free rate converted to weekly
+
+## loop to calculate risk and return per weights 
+for (i in 1:10000) {
+  weights &lt;- all_weights[i, ]
+  portfolio_risk[i] &lt;- sqrt(sum((weights %*% var_covar) * weights))
+  portfolio_returns[i] &lt;- sum(weights * colMeans(portfolio_adjusted))
+  sharpe_ratios[i] &lt;- (portfolio_returns[i] - risk_free_rate) / portfolio_risk[i]
+}
+
+
+## Identify the portfolio with the highest Sharpe ratio
+max_sharpe_index &lt;- which.max(sharpe_ratios)
+max_sharpe_portfolio &lt;- all_weights[max_sharpe_index, ]
+tangency_portfolio_risk &lt;- portfolio_risk[max_sharpe_index]
+tangency_portfolio_return &lt;- portfolio_returns[max_sharpe_index]
+
+## Make a data frame to be used for ggplot2
+portfolio_df &lt;- data.frame(portfolio_risk, portfolio_returns)
+```
+
+]
+.w-50[
+
+&lt;img src="images/unnamed-chunk-6-1.png" width="540" style="display: block; margin: auto;" /&gt;
+
+]
+
+]
+
+.footnote.monash-black.f6[
+&lt;i class="fas fa-book"&gt;&lt;/i&gt; Joshua M. Ulrich (2024). `quantmod`: Quantitative Financial Modelling Framework. R
+  package version 0.4.26. DOI:10.32614/CRAN.package.quantmod&lt;br&gt;
+&lt;i class="fas fa-book"&gt;&lt;/i&gt; Wickham H (2016). `ggplot2`: Elegant Graphics for Data Analysis. Springer-Verlag New York. ISBN 978-3-319-24277-4
+&lt;br&gt;&lt;br&gt;&lt;br&gt;
+]
+
+---
+
+name: complex-plot
+class: font_smaller
+
+# .monash-purple2[Exercise: Ford and Molson Coors]
+
+.flex[
+.overflow-scroll.h---500.w-50[
+
+``` r
+# Load required libraries
+library(tidyverse)
+library(ggplot2)
+
+# Input data
+er_ford &lt;- 0.15    # Expected return of Ford Motors
+sd_ford &lt;- 0.42    # Volatility of Ford Motors
+er_molson &lt;- 0.11  # Expected return of Molson Coors
+sd_molson &lt;- 0.32  # Volatility of Molson Coors
+corr &lt;- 0          # Correlation between stocks (uncorrelated)
+
+# Function to calculate portfolio metrics
+calculate_portfolio &lt;- function(w_ford) {
+  w_molson &lt;- 1 - w_ford
+  
+  # Expected return
+  er_portfolio &lt;- w_ford * er_ford + w_molson * er_molson
+  
+  # Portfolio volatility (simplified for uncorrelated assets)
+  sd_portfolio &lt;- sqrt(w_ford^2 * sd_ford^2 + w_molson^2 * sd_molson^2)
+  
+  return(data.frame(w_ford, er_portfolio, sd_portfolio))
+}
+
+# Generate portfolios with different weights
+weights &lt;- seq(0, 1, by = 0.01)
+portfolios &lt;- map_df(weights, calculate_portfolio)
+
+# Find special portfolios
+min_var_portfolio &lt;- portfolios[which.min(portfolios$sd_portfolio), ]
+portfolio_73_27 &lt;- calculate_portfolio(0.73)
+
+# Calculate Sharpe ratios (assuming 3% risk-free rate)
+rf &lt;- 0.03
+portfolios$sharpe &lt;- (portfolios$er_portfolio - rf) / portfolios$sd_portfolio
+optimal_sharpe &lt;- portfolios[which.max(portfolios$sharpe), ]
+
+# Create annotation data frame
+annotations &lt;- data.frame(
+  label = c("100% Ford", "100% Molson", "Minimum Variance Portfolio", "73% Ford, 27% Molson"),
+  x = c(sd_ford, sd_molson, min_var_portfolio$sd_portfolio, portfolio_73_27$sd_portfolio),
+  y = c(er_ford, er_molson, min_var_portfolio$er_portfolio, portfolio_73_27$er_portfolio)
+)
+```
+
+]
+.w-50[
+
+&lt;img src="images/unnamed-chunk-8-1.png" width="540" style="display: block; margin: auto;" /&gt;
+
+]
+
+]
+---
+
+class: transition  animated slideInLeft
+
+# .circle-big[4] 
+
+# Key Takeaways and Q&amp;A
+
+&lt;span style="font-size:20pt; "&gt;**_"An investment in knowledge pays the best interest."_** - Benjamin Franklin, 1706-1790&lt;/span&gt;
+
+&lt;br&gt;&lt;br&gt;
+
+
+---
+
+# Corporate Finance
+
+&lt;br&gt;&lt;br&gt;
+
+.f1.center[
+.animated.bounce[
+.monash-blue[&lt;b&gt;&lt;i class="fas fa-project-question"&gt;&lt;/i&gt; 4. Key Takeaways and Q&amp;A&lt;/b&gt;]
+]
+
+.monash-ruby2[**4.1 Summary of Key Concepts**
+
+**4.2 Limitations of Portfolio Optimization Models**
+
+**4.3 Alternative Approaches**
+
+**4.4 Q&amp;A Session**
+]
+
+{{content}}
+]
+
+---
+
+# .monash-purple2[4.1 Summary of Key Concepts]
+
+.monash-ruby2[
+**1. Core Principle: Risk-Return Trade-off:** Investors aim to maximize returns for a given level of risk or minimize risk for a given level of return.]
+--
+
+.monash-ruby2[
+**2. Diversification:** _"Don’t put all your eggs in one basket."_]
+--
+
+.monash-ruby2[
+**3. Efficient Frontier:** A set of portfolios that offer the highest expected return for a given level of risk or the lowest risk for a given level of return. Portfolios below the efficient frontier are inefficient.]
+--
+
+.monash-ruby2[
+**4. Portfolio Risk and Return:** Expected Return: `\(E(R_P)=\displaystyle\sum_{i=1}^{n}w_i E(R_i)\)` and Portfolio Risk (Std. Deviation): `\(\sigma_p=\sqrt{\displaystyle\sum_{i=1}^{n}\displaystyle\sum_{j=1}^{n}w_i w_j\sigma_i \sigma_j\rho_{ij}}\)`
+]
+--
+
+.monash-ruby2[
+**5. Optimal Portfolio:** Lies at the point where the investor’s indifference curve is tangent to the efficient frontier. Maximizes investor utility based on risk tolerance and return objectives.]
+--
+
+.monash-ruby2[
+**6. Minimum Variance Portfolio (MVP):** The portfolio with the **lowest possible risk**.]
+
+
+---
+
+# .monash-purple2[4.2 Limitations of Portfolio Optimization Models]
+
+.monash-ruby2[
+**1. Reliance on historical data and stationarity assumptions.**]&lt;br&gt;
+--
+.monash-ruby2[
+**2. Assumptions of Normality in Returns.**]&lt;br&gt;
+--
+.monash-ruby2[
+**3. Single-Period framework.**]&lt;br&gt;
+--
+.monash-ruby2[
+**4. Ignores Higher Moments.**]&lt;br&gt;
+--
+.monash-ruby2[
+**5. Quadratic Utility Assumption.**]&lt;br&gt;
+--
+.monash-ruby2[
+**6. Practical Implementation Challenges.**]&lt;br&gt;
+--
+.monash-ruby2[
+**7. Risk-free Rate and Borrowing Assumptions.**]
+
+---
+
+# .monash-purple2[4.3 Alternative Approaches]
+
+.monash-green2[**1. Reinforcement Learning (RL) for Dynamic Adaptation**] Replace the static, single-period optimization with a reinforcement learning framework that continuously learns and adapts portfolio weights based on evolving market conditions, investor goals, and transaction costs.&lt;br&gt;
+--
+
+.monash-green2[**2. Incorporating Higher Moments and Downside Risk:**] Move beyond variance to include skewness and kurtosis explicitly in the objective function, i.e., a utility function that penalizes downside risk (e.g., Conditional Value-at-Risk, or CVaR) while rewarding positive skewness. This aligns better with investor preferences observed in behavioral finance.&lt;br&gt;
+--
+
+.monash-green2[**3. Robust Estimation with Machine Learning:**] Leverage techniques like deep learning or Bayesian methods to improve the estimation of expected returns, covariances, and higher moments. Shrinkage techniques or generative models (e.g., GANs) could refine covariance matrix estimation, addressing the noise issue in large portfolios.&lt;br&gt;
+--
+
+.monash-green2[**4. Alternative Risk Models:**] Integrate fat-tailed distributions (e.g., Student’s t-distribution) or EVT to better capture tail risk. This entails a hybrid model where RL optimizes under a stress-tested scenario framework.&lt;br&gt;
+--
+
+.monash-green2[**5. Behavioral and Real-World Constraints:**] Incorporate investor-specific constraints (e.g., loss aversion, liquidity needs) and market frictions (e.g., transaction costs, short-selling limits) into the optimization process, making it more practical.
+
+---
+
+# .monash-purple2[4.4 Q&amp;A]
+
+---
+
+class: transition  animated slideInLeft
+
+# .circle-big[5] 
+
+# Simulation with Excel
+
+&lt;br&gt;&lt;br&gt;
+
+
+---
+
+# Corporate Finance
+
+&lt;br&gt;&lt;br&gt;
+
+.f1.center[
+.animated.bounce[
+.monash-blue[&lt;b&gt;&lt;i class="fas fa-project-diagram"&gt;&lt;/i&gt; 5. Simulation with `Excel`&lt;/b&gt;]
+]
+
+.monash-ruby2[**5.1 Data Preparation**
+
+**5.2 Portfolio Optimization**
+
+**5.3 Portfolio Performance Analysis**
+]
+
+{{content}}
+]
+
+---
+
+layout: false
+background-size: cover
+class: title-slide
+background-image: url("images/ucl-02.png")
+
+&lt;br&gt;
+
+All the material including slides, R-scripts, &amp; Excel files are available. Feel free to downloand them from:
+
+.w-80.center[
+[jrcaro.github.com/louvain2025](https://github.com/jrcarob/UCLouvain)
+
+{{content}}
+
+]
+
+
+.bottom_abs.width100[
+
+*José Caro*
+
+&lt;i class="fas fa-university"&gt;&lt;/i&gt; Department of Statistics, Econometrics and Applied Statistics, &lt;Br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;University of Córdoba, Spain
+
+&lt;i class="fas fa-envelope"&gt;&lt;/i&gt;  jcaro@uco.es
+
+&lt;a href="https://twitter.com/caroisallin" style="color:black"&gt;&lt;i class="fab fa-twitter"&gt;&lt;/i&gt; @caroisallin&lt;/a&gt;
+
+
+&lt;br&gt;
+
+]
+
+--
+
+&lt;br&gt;
+
+**Thank you!**
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="lib/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "magula",
+  "highlightLanguage": "r",
+  "highlightLines": true,
+  "highlightSpans": false,
+  "countIncrementalSlides": false,
+  "slideNumberFormat": "%current%/%total%",
+  "navigation": {
+    "scroll": false,
+    "touch": true,
+    "click": false
+  },
+  "ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'lib/mathjax-local/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
