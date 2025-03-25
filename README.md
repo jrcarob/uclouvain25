@@ -21,6 +21,12 @@ Go to `R-scripts`folder to check the R codes and/or the `Excel` folder to dowloa
 
 ```bash
 uclouvain25/
+├─ R-scripts/
+│  ├─ exercise.R
+│  ├─ louvain_corp_finance.R
+│  ├─ louvain_eff_front.R
+├─ excel/
+│  ├─ portfolio.xls
 ├─ assets/
 ├─ images/
 ├─ index_cache/html
@@ -29,11 +35,5 @@ uclouvain25/
 ├─ .Rhistory
 ├─ .gitattributes
 ├─ README.md
-├─ R-scripts/
-│  ├─ exercise.R
-│  ├─ louvain_corp_finance.R
-│  ├─ louvain_eff_front.R
-├─ Excel/
-│  ├─ portfolio.xls
 ├─ uclouvain2025.pdf
 ```
