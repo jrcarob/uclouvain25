@@ -17,4 +17,17 @@ Materials provided:
  - Excel file for portfolio optimization and efficient frontier
  - R codes for simulate efficient portfolios with financial libraries `quantmod`, `PortfolioAnalytics` and lecture exercise solution
 
- 
+```bash
+my-app/
+├─ node_modules/
+├─ public/
+│  ├─ favicon.ico
+│  ├─ index.html
+│  ├─ robots.txt
+├─ src/
+│  ├─ index.css
+│  ├─ index.js
+├─ .gitignore
+├─ package.json
+├─ README.md
+```
