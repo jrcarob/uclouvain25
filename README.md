@@ -17,17 +17,23 @@ Materials provided:
  - Excel file for portfolio optimization and efficient frontier
  - R codes for simulate efficient portfolios with financial libraries `quantmod`, `PortfolioAnalytics` and lecture exercise solution
 
+Go to `R-scripts`folder to check the R codes and/or the `Excel` folder to dowload the Excel file. 
+
 ```bash
-my-app/
-├─ node_modules/
-├─ public/
-│  ├─ favicon.ico
-│  ├─ index.html
-│  ├─ robots.txt
-├─ src/
-│  ├─ index.css
-│  ├─ index.js
-├─ .gitignore
-├─ package.json
+uclouvain25/
+├─ assets/
+├─ images/
+├─ index_cache/html
+├─ lib/
+├─ .DS_Store
+├─ .Rhistory
+├─ .gitattributes
 ├─ README.md
+├─ R-scripts/
+│  ├─ exercise.R
+│  ├─ louvain_corp_finance.R
+│  ├─ louvain_eff_front.R
+├─ Excel/
+│  ├─ portfolio.xls
+├─ uclouvain2025.pdf
 ```
